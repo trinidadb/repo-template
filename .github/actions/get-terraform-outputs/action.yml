@@ -1,0 +1,32 @@
+name: "Get Terraform Outputs"
+description: "A composite action to retrieve specific Terraform outputs"
+
+inputs:
+  outputs_of_interest:
+    description: "Space-separated list of Terraform outputs to extract."
+    required: true
+  tf_working_dir:
+    description: "Directory containing the terraform.tfstate file."
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_wrapper: false
+
+    - name: Initialize Terraform
+      run: terraform init
+      working-directory: ${{ inputs.tf_working_dir }}
+      shell: bash
+
+    - name: Extract Terraform Outputs
+      run: |
+        for output in ${{ inputs.outputs_of_interest }}; do
+          value=$(terraform output -raw $output 2>/dev/null || echo "Output not found")
+          echo "$output=$value" >> $GITHUB_ENV
+        done
+      working-directory: ${{ inputs.tf_working_dir }}
+      shell: bash
