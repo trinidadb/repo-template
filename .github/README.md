@@ -1,3 +1,11 @@
+# Everything that was in this repo was migrated to other projects. Just keept it because Wiki pages are good :D
+
+https://github.com/trinidadb/repo-template/wiki
+
+
+
+
+
 GitHub Actions automatically checks out the branch associated with the event that triggered the workflow unless otherwise specified.
 
 Here's an explanation of why this works:
